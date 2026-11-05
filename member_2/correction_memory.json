@@ -1,0 +1,27 @@
+[
+    {
+        "original_sql": "SELEC city FROM zomato;",
+        "corrected_sql": "SELECT city FROM zomato;",
+        "error_message": "Invalid SQL syntax"
+    },
+    {
+        "original_sql": "SELEC city FROM zomato;",
+        "corrected_sql": "SELECT city FROM zomato;",
+        "error_message": "Unable to identify SQL query type."
+    },
+    {
+        "original_sql": "SELECT city AVG(time_taken) FROM zomato;",
+        "corrected_sql": "SELECT city, AVG(time_taken) FROM zomato GROUP BY city;",
+        "error_message": "Invalid SQL syntax: Invalid expression / Unexpected token. Line 1, Col: 16.\n  SELECT city AVG\u001b[4m(\u001b[0mtime_taken) FROM zomato;"
+    },
+    {
+        "original_sql": "SELECT city, avg_delivery_time\nFROM (\n    SELECT city, AVG(time_taken) AS avg_delivery_time,\n           RANK() OVER (ORDER BY AVG(time_taken) DESC) AS rnk\n    FROM zomato\n    GROUP BY city\n) sub\nWHERE rnk <= 5;",
+        "corrected_sql": "SELECT city, avg_delivery_time\nFROM (\n    SELECT city, AVG(time_taken) AS avg_delivery_time\n    FROM zomato\n    GROUP BY city\n    ORDER BY avg_delivery_time DESC\n    LIMIT 5\n) sub\nORDER BY avg_delivery_time DESC;",
+        "error_message": "Semantic error: The query filters the top 5 cities correctly, but it does not order the final result set by average delivery time in descending order, which is required by the user\u2019s request. Additionally, using RANK() is unnecessary when a simple LIMIT 5 would suffice. The query should include an ORDER BY clause in the outer SELECT to preserve the ranking order.\nSuggestion: SELECT city, avg_delivery_time FROM (SELECT city, AVG(time_taken) AS avg_delivery_time FROM zomato GROUP BY city ORDER BY avg_delivery_time DESC LIMIT 5) sub ORDER BY avg_delivery_time DESC;"
+    },
+    {
+        "original_sql": "SELECT city, AVG(time_taken) AS avg_time, RANK() OVER (ORDER BY AVG(time_taken) DESC) AS city_rank\nFROM zomato\nGROUP BY city\nORDER BY city_rank;",
+        "corrected_sql": "SELECT city, avg_time, RANK() OVER (ORDER BY avg_time DESC) AS city_rank\nFROM (\n    SELECT city, AVG(time_taken) AS avg_time\n    FROM zomato\n    GROUP BY city\n) sub\nORDER BY city_rank;",
+        "error_message": "Semantic error: The window function RANK() cannot reference the aggregate AVG(time_taken) directly; it must be applied to the grouped result. The query should compute the average per city first, then rank those averages. The current SQL will produce a syntax error.\nSuggestion: Use a subquery or CTE: SELECT city, avg_time, RANK() OVER (ORDER BY avg_time DESC) AS city_rank FROM (SELECT city, AVG(time_taken) AS avg_time FROM zomato GROUP BY city) sub ORDER BY city_rank;"
+    }
+]
