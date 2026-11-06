@@ -1,0 +1,15 @@
+
+City,Product,Category,Units_Sold,Revenue,Profit
+Mumbai,Laptop,Electronics,10,30000,6000
+Delhi,Phone,Electronics,15,22000,4500
+Pune,Tablet,Electronics,8,16000,3000
+Bangalore,Laptop,Electronics,12,25000,5500
+Mumbai,Phone,Electronics,20,40000,8000
+Delhi,Laptop,Electronics,9,27000,5000
+Pune,Phone,Electronics,11,18000,3500
+Bangalore,Tablet,Electronics,14,21000,4200
+Mumbai,Tablet,Electronics,7,14000,2800
+Delhi,Phone,Electronics,13,26000,5200
+Pune,Laptop,Electronics,6,19000,3800
+Bangalore,Phone,Electronics,18,32000,6500
+
