@@ -1,4 +1,11 @@
-from ai.query_understanding import understand_query
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+member_2_path = os.path.dirname(current_dir)
+sys.path.insert(0, member_2_path)
+
+from main.query_understanding import understand_query
 
 
 schema = {

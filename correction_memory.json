@@ -1,0 +1,7 @@
+[
+    {
+        "original_sql": "SELEC city FROM zomato;",
+        "corrected_sql": "SELECT city FROM zomato;",
+        "error_message": "Invalid SQL syntax"
+    }
+]

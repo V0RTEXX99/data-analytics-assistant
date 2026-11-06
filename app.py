@@ -19,6 +19,8 @@ from utils.sql_utils import generate_sql, execute_query
 from utils.chart_utils import build_chart, CHART_TYPES
 from utils.insights_utils import generate_insights
 
+from database_utils.in_memory_sql_db import InMemorySQL
+
 
 # --------------------------------------------------------------------------
 # Page configuration

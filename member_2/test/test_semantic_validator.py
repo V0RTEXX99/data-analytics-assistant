@@ -1,4 +1,11 @@
-from ai.semantic_validator import validate_sql_semantics
+import sys
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+member_2_path = os.path.dirname(current_dir)
+sys.path.insert(0, member_2_path)
+
+from main.semantic_validator import validate_sql_semantics
 
 schema = {
     "table_name": "zomato",

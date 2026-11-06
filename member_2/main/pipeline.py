@@ -1,7 +1,7 @@
-from sql_generator import generate_sql
-from sql_validator import validate_sql
-from sql_correction import correct_and_revalidate
-from query_understanding import understand_query
+from .sql_generator import generate_sql
+from .sql_validator import validate_sql
+from .sql_correction import correct_and_revalidate
+from .query_understanding import understand_query
 
 
 def process_user_question(schema, user_question, clarification_history=None):
