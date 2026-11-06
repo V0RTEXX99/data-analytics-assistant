@@ -1,17 +1,40 @@
 import os
 import json
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from groq import Groq
 
 from prompt_builder import build_sql_prompt
 from sql_validator import clean_sql_response
 from correction_memory import get_corrections
 
-load_dotenv()
+# load_dotenv()
+load_dotenv(find_dotenv())
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+
+    # Format for schema:
+    
+    # schema = {
+    #     "table_name": "retail_sales",
+    #     "columns": {
+    #         "category": "VARCHAR",
+    #         "sales": "FLOAT",
+    #         "quantity": "INTEGER",
+    #         "order_date": "DATE"
+    #     }
+    # }
+    
+    # Format for result:
+    
+    # result = {
+    #     "status": "success",
+    #     "primary_sql": primary_sql,
+    #     "alternative_sql": alternative_sql,
+    #     "error": None,
+    # }
+    
 
 def generate_sql(schema, user_question):
     """
