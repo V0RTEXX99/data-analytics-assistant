@@ -4,9 +4,9 @@ import json
 from dotenv import load_dotenv
 from groq import Groq
 
-from ai.prompt_builder import build_sql_prompt
-from ai.sql_validator import clean_sql_response
-from ai.correction_memory import get_corrections
+from prompt_builder import build_sql_prompt
+from sql_validator import clean_sql_response
+from correction_memory import get_corrections
 
 load_dotenv()
 

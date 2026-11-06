@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 
-from ai.sql_validator import validate_sql, clean_sql_response
-from ai.semantic_validator import validate_sql_semantics
-from ai.correction_memory import save_correction
+from sql_validator import validate_sql, clean_sql_response
+from semantic_validator import validate_sql_semantics
+from correction_memory import save_correction
 
 load_dotenv()
 
