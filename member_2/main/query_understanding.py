@@ -1,12 +1,6 @@
-import os
 import json
 
-from dotenv import load_dotenv
-from groq import Groq
-
-load_dotenv()
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+from .llm_client import get_client, get_model_name
 
 
 def format_schema_for_understanding(schema):
@@ -120,8 +114,8 @@ For CLARIFICATION_NEEDED:
 - interpreted_question must be null.
 """
 
-    response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
+    response = get_client().chat.completions.create(
+        model=get_model_name(),
         messages=[
             {
                 "role": "system",

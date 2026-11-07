@@ -1,15 +1,7 @@
-import os
-
-from dotenv import load_dotenv
-from groq import Groq
-
+from .llm_client import get_client, get_model_name
 from .sql_validator import validate_sql, clean_sql_response
 from .semantic_validator import validate_sql_semantics
 from .correction_memory import save_correction
-
-load_dotenv()
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 def correct_sql(schema, sql_query, validation_message, user_question=None):
@@ -62,8 +54,8 @@ RULES:
 CORRECTED SQL:
 """
 
-    response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
+    response = get_client().chat.completions.create(
+        model=get_model_name(),
         messages=[
             {
                 "role": "system",

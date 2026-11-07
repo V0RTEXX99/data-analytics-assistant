@@ -5,8 +5,12 @@ import pandas as pd
 class InMemorySQL:
     def __init__(self):
         """Initialize an in-memory SQLite database."""
-        self.conn = sqlite3.connect(":memory:")
+        # check_same_thread=False: Streamlit re-runs the script in a new
+        # thread on every interaction, and SQLite otherwise refuses to be
+        # used from a thread other than the one that created it.
+        self.conn = sqlite3.connect(":memory:", check_same_thread=False)
         self.cursor = self.conn.cursor()
+        self.last_error = None
 
     def load_dataframe(self, df: pd.DataFrame, table_name: str):
         """
@@ -26,10 +30,13 @@ class InMemorySQL:
 
     def run_query(self, query: str):
         """Execute an SQL query and return a DataFrame."""
+        self.last_error = None
+
         try:
             return pd.read_sql_query(query, self.conn)
 
         except Exception as e:
+            self.last_error = str(e)
             print(f"SQL Error: {e}")
             return None
 
@@ -76,6 +83,16 @@ class InMemorySQL:
         except Exception as e:
             print(f"Error describing table: {e}")
             return None
+
+    def get_create_statement(self, table_name: str):
+        """Return the CREATE TABLE statement SQLite generated for a table."""
+        self.cursor.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND name=?",
+            (table_name,)
+        )
+
+        row = self.cursor.fetchone()
+        return row[0] if row else None
 
     def delete_table(self, table_name: str):
         """Delete a specific table."""

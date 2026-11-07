@@ -127,10 +127,12 @@ def create_chart(result_df, chart_type, x_column, y_column=None):
         chart_df = result_df.copy()
 
         if x_column in chart_df.columns:
-            chart_df[x_column] = pd.to_datetime(
-                chart_df[x_column],
-                errors="ignore"
-            )
+            # Convert to dates when possible; keep the original values
+            # otherwise. (errors="ignore" was removed in pandas 3.)
+            try:
+                chart_df[x_column] = pd.to_datetime(chart_df[x_column])
+            except (ValueError, TypeError):
+                pass
 
         return px.line(
             chart_df,

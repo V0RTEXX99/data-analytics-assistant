@@ -6,11 +6,6 @@ from groq import Groq
 
 load_dotenv()
 
-GROQ_MODEL = os.getenv(
-    "GROQ_MODEL",
-    "openai/gpt-oss-120b"
-)
-
 
 def prepare_dataset_summary(df):
     """Calculate reliable and compact dataset statistics."""
@@ -81,10 +76,16 @@ def generate_ai_insights(df, question=None):
         return "No data available to analyze."
 
     api_key = os.getenv("GROQ_API_KEY")
+    model_name = os.getenv("GROQ_MODEL")
 
     if not api_key:
         raise ValueError(
             "GROQ_API_KEY is missing from your .env file."
+        )
+
+    if not model_name:
+        raise ValueError(
+            "GROQ_MODEL is missing from your .env file."
         )
 
     dataset_summary = prepare_dataset_summary(df)
@@ -139,7 +140,7 @@ IMPORTANT RULES:
         client = Groq(api_key=api_key)
 
         response = client.chat.completions.create(
-            model=GROQ_MODEL,
+            model=model_name,
             messages=[
                 {
                     "role": "system",

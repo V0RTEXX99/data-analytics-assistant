@@ -1,17 +1,9 @@
-import os
 import json
 
-from dotenv import load_dotenv, find_dotenv
-from groq import Groq
-
+from .llm_client import get_client, get_model_name
 from .prompt_builder import build_sql_prompt
 from .sql_validator import clean_sql_response
 from .correction_memory import get_corrections
-
-# load_dotenv()
-load_dotenv(find_dotenv())
-
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
     # Format for schema:
@@ -111,8 +103,8 @@ RANKING REQUIREMENTS:
 Return only the required structured JSON response.
 """
 
-    response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
+    response = get_client().chat.completions.create(
+        model=get_model_name(),
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt},

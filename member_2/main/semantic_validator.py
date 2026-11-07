@@ -1,15 +1,6 @@
-
-import os
 import json
 
-from dotenv import load_dotenv
-from groq import Groq
-
-load_dotenv()
-
-client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
-)
+from .llm_client import get_client, get_model_name
 
 
 def validate_sql_semantics(schema, user_question, sql_query):
@@ -69,8 +60,8 @@ RULES:
 - Do not include Markdown or text outside the JSON object.
 """
 
-    response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
+    response = get_client().chat.completions.create(
+        model=get_model_name(),
         messages=[
             {
                 "role": "system",
